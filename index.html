@@ -1,16 +1,12 @@
 <input type="text" id="userInput">
 <button onclick="sendToTelegram()">Send</button>
 
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script>
+let tg = window.Telegram.WebApp;
+tg.expand();
 function sendToTelegram() {
     const input = document.getElementById('userInput').value;
-    const botToken = 'YOUR_BOT_TOKEN';
-    const chatId = 'YOUR_CHAT_ID';
-    const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(input)}`;
-
-    fetch(url)
-        .then(response => response.json())
-        .then(data => console.log('Message sent:', data))
-        .catch(error => console.error('Error:', error));
-}
+    tg.sendData(input);
 </script>
