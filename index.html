@@ -12,6 +12,7 @@
 <script>
     Telegram.WebApp.ready();
     function sendToTelegram() {
+        const data = JSON.stringify({value: document.getElementById('userInput').value});
         Telegram.WebApp.sendData(data);
         Telegram.WebApp.close();
         <!--
