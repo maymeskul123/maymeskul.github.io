@@ -13,8 +13,7 @@
     let tg = window.Telegram.WebApp;
     function sendToTelegram() {
         const input = JSON.stringify({value: document.getElementById('userInput').value});
-        tg.sendData(input);
-        tg.sendData("URA!!!!!!!!");
+        tg.sendData(input);        
 </script>
 <body style="background-color: #ffffff">
     <input type="text" id="userInput">
