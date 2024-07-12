@@ -12,8 +12,11 @@
 <script type="text/javascript">
     Telegram.WebApp.ready();
     function sendToTelegram() {
-        const data = JSON.stringify({value: document.getElementById('userInput').value});
-        Telegram.WebApp.sendData(data);
+        Telegram.WebApp.MainButton.setText('Choose Color').show().onClick(function () {
+            const data = JSON.stringify({value: document.getElementById('userInput').value});
+            Telegram.WebApp.sendData(data);
+            Telegram.WebApp.close();
+        });
 </script>
 <body style="background-color: #ffffff">
     <input type="text" id="userInput">
