@@ -12,11 +12,14 @@
 <script>
     Telegram.WebApp.ready();
     function sendToTelegram() {
+        Telegram.WebApp.sendData(data);
+        Telegram.WebApp.close();
+        <!--
         Telegram.WebApp.MainButton.setText('Send input to bot').show().onClick(function () {
             const data = JSON.stringify({value: document.getElementById('userInput').value});
-            Telegram.WebApp.sendData(data);
-            Telegram.WebApp.close();
-        })};
+       -->     
+        })
+    };
 </script>
 <body style="background-color: #ffffff">
     <input type="text" id="userInput">
