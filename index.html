@@ -10,10 +10,10 @@
 </head>
 
 <script type="text/javascript">
-    let tg = window.Telegram.WebApp;
+    Telegram.WebApp.ready();
     function sendToTelegram() {
-        const input = JSON.stringify({value: document.getElementById('userInput').value});
-        tg.sendData(input);        
+        const data = JSON.stringify({value: document.getElementById('userInput').value});
+        Telegram.WebApp.sendData(data);
 </script>
 <body style="background-color: #ffffff">
     <input type="text" id="userInput">
