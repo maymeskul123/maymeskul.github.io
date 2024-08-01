@@ -21,7 +21,7 @@
        -->     
         })
     };
-    var initData = Telegram.WebApp.initData || '';
+    var initData = Telegram.WebApp.initData;
     var initDataUnsafe = Telegram.WebApp.initDataUnsafe || {};
 
     function sendMessage() {
@@ -32,8 +32,8 @@
                 Accept: "application/json",
                 "Content-Type": "application/json;charset=UTF-8",
               },
-              body: JSON.stringify({
-                init_data: initData,
+        body: JSON.stringify({
+                    init_data: initData,
               }),
             };
             fetch(url, options)
@@ -43,7 +43,7 @@
               });
         
         
-    }
+    };
 </script>
 <body style="background-color: #ffffff">
     <input type="text" id="userInput">
