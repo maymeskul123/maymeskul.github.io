@@ -1,52 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <title>python-telegram-bot Example WebApp</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <!--
-        <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script>
-    -->
+  <meta charset="UTF-8">
+  <title>python-telegram-bot Example WebApp</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
 </head>
 
-<script>
+<body style="background-color: #ffffff">
+  <script>
     Telegram.WebApp.ready();
-    function sendToTelegram() {
-        const data = JSON.stringify({value: document.getElementById('userInput').value});
-        Telegram.WebApp.sendData(data);
-        Telegram.WebApp.close();
-        <!--
-        Telegram.WebApp.MainButton.setText('Send input to bot').show().onClick(function () {
-            const data = JSON.stringify({value: document.getElementById('userInput').value});
-       -->     
-        })
-    };
     var initData = Telegram.WebApp.initData;
     var initDataUnsafe = Telegram.WebApp.initDataUnsafe || {};
+    console.log('Init Data', initData)
 
-    function sendMessage() {
-        fetch('https://api.peerflow.xyz/users/telegram-callback', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify({ message: randomString })
-})
-.then(response => response.json())
-.then(data => {
-  console.log('Успех:', data);
-})
-.catch((error) => {
-  console.error('Ошибка:', error);
-});
-        
-        
+    const sendMessage = async () => {
+      const url = "https://api.peerflow.xyz/users/telegram-callback";
+      const options = {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json;charset=UTF-8",
+        },
+        body:
+          JSON.stringify({
+            init_data: initData
+          })
+        ,
+      };
+
+      await fetch(url, options)
+        .then((response) => response.json())
+        .then((data) =>
+          console.log(data)
+        ).catch(e => console.error(e));
     };
-</script>
-<body style="background-color: #ffffff">
-    <input type="text" id="userInput">
-    <button onclick="sendMessage()">Send</button>
-</body>
-<script type="text/javascript">
+  </script>
+<button onclick="sendMessage()">Send</button>
+  <script type="text/javascript">
     Telegram.WebApp.expand();
-</script>
+  </script>
+</body>
+
+
+</html>
