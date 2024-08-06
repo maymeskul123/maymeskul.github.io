@@ -8,6 +8,7 @@
 <body>
     <h1>Отправка GET запроса на PeerFlow API</h1>
     <button onclick="sendRequest()">Отправить запрос</button>
+    <div id="response"></div>
 
     <script>
         function sendRequest() {
@@ -17,14 +18,16 @@
             })
             .then(response => {
                 if (response.ok) {
-                    alert('Запрос успешно отправлен!');
-                } else {
-                    alert('Произошла ошибка при отправке запроса.');
+                    return response.text(); // или response.json(), если ответ в формате JSON
                 }
+                throw new Error('Ошибка сети');
+            })
+            .then(data => {
+                document.getElementById('response').innerHTML = '<h2>Ответ сервера:</h2><pre>' + data + '</pre>';
             })
             .catch(error => {
                 console.error('Ошибка:', error);
-                alert('Произошла ошибка при отправке запроса.');
+                document.getElementById('response').innerHTML = '<h2>Ошибка:</h2><p>' + error.message + '</p>';
             });
         }
     </script>
