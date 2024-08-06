@@ -18,7 +18,7 @@
             })
             .then(response => {
                 if (response.ok) {
-                    return response.json(); // или response.json(), если ответ в формате JSON
+                    return response.text(); // или response.json(), если ответ в формате JSON
                 }
                 throw new Error('Ошибка сети');
             })
