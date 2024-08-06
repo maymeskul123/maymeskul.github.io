@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Логин PeerFlow</title>
+</head>
+<body>
+    <h1>Логин в PeerFlow API</h1>
+    <button onclick="login()">Войти как admin</button>
+    <div id="response"></div>
+
+    <script>
+        function login() {
+            fetch('https://api.peerflow.xyz/users/login?username=admin&password=admin', {
+                method: 'POST',
+                credentials: 'include', // Это позволяет отправлять и получать куки
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('Ошибка сети: ' + response.status);
+            })
+            .then(data => {
+                document.getElementById('response').innerHTML = '<h2>Ответ сервера:</h2><pre>' + JSON.stringify(data, null, 2) + '</pre>';
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+                document.getElementById('response').innerHTML = '<h2>Ошибка:</h2><p>' + error.message + '</p>';
+            });
+        }
+    </script>
+</body>
+</html>
