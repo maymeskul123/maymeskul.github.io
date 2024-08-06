@@ -3,33 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GET запрос на PeerFlow API</title>
+    <title>GET запрос на PeerFlow API и проверка куки</title>
 </head>
 <body>
-    <h1>Отправка GET запроса на PeerFlow API</h1>
+    <h1>Отправка GET запроса на PeerFlow API и проверка куки</h1>
     <button onclick="sendRequest()">Отправить запрос</button>
     <div id="response"></div>
+    <div id="cookieInfo"></div>
 
     <script>
         function sendRequest() {
             fetch('https://api.peerflow.xyz/users/set-cookie', {
                 method: 'GET',
-                credentials: 'include' // Это позволяет отправлять и получать куки
+                credentials: 'include'
             })
             .then(response => {
                 if (response.ok) {
-                    return response.text(); // или response.json(), если ответ в формате JSON
+                    return response.text();
                 }
                 throw new Error('Ошибка сети');
             })
             .then(data => {
                 document.getElementById('response').innerHTML = '<h2>Ответ сервера:</h2><pre>' + data + '</pre>';
+                checkCookie();
             })
             .catch(error => {
                 console.error('Ошибка:', error);
                 document.getElementById('response').innerHTML = '<h2>Ошибка:</h2><p>' + error.message + '</p>';
             });
         }
+
+        function checkCookie() {
+            let cookieInfo = document.getElementById('cookieInfo');
+            let cookies = document.cookie.split(';');
+            let peerflowCookie = cookies.find(cookie => cookie.trim().startsWith('peerflow='));
+            
+            if (peerflowCookie) {
+                cookieInfo.innerHTML = '<h2>Куки PeerFlow:</h2><p>Найдена: ' + peerflowCookie.trim() + '</p>';
+            } else {
+                cookieInfo.innerHTML = '<h2>Куки PeerFlow:</h2><p>Не найдена</p>';
+            }
+        }
+
+        // Проверяем куки при загрузке страницы
+        window.onload = checkCookie;
     </script>
 </body>
 </html>
