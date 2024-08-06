@@ -3,86 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PeerFlow API Interaction</title>
+    <title>PeerFlow Login</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            max-width: 600px;
-            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background-color: white;
             padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
-        form, div {
-            margin-bottom: 20px;
-        }
-        input, button {
+        input {
             display: block;
             margin: 10px 0;
             padding: 5px;
+            width: 200px;
+        }
+        button {
+            display: block;
             width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
         #response {
-            white-space: pre-wrap;
-            background-color: #f0f0f0;
-            padding: 10px;
-            border-radius: 5px;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <h1>PeerFlow API Interaction</h1>
-    
-    <form id="loginForm">
-        <input type="text" id="username" name="username" placeholder="Username" required>
-        <input type="password" id="password" name="password" placeholder="Password" required>
-        <button type="submit">Login</button>
-    </form>
-
-    <div>
-        <button id="getUsersButton">Get Users</button>
+    <div class="container">
+        <form id="loginForm">
+            <input type="text" id="username" name="username" placeholder="Username" required>
+            <input type="password" id="password" name="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+        <button onclick="goToUsers()">Go to Users</button>
+        <div id="response"></div>
     </div>
 
-    <div id="response"></div>
-
     <script>
-        const responseDiv = document.getElementById('response');
-
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
-
+            
             fetch(`https://api.peerflow.xyz/users/login?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`, {
                 method: 'POST',
                 headers: {
-                    'accept': 'application/json'
+                    'accept': 'application/json',
+                    'Content-Type': 'application/x-www-form-urlencoded'
                 },
-                credentials: 'include'
+                body: ''
             })
             .then(response => response.json())
             .then(data => {
-                responseDiv.textContent = JSON.stringify(data, null, 2);
+                document.getElementById('response').innerHTML = '<h3>Response:</h3><pre>' + JSON.stringify(data, null, 2) + '</pre>';
             })
             .catch(error => {
-                responseDiv.textContent = 'Error: ' + error.message;
+                document.getElementById('response').innerHTML = '<h3>Error:</h3><p>' + error.message + '</p>';
             });
         });
 
-        document.getElementById('getUsersButton').addEventListener('click', function() {
-            fetch('https://api.peerflow.xyz/users/', {
-                method: 'GET',
-                headers: {
-                    'accept': 'application/json'
-                },
-                credentials: 'include'
-            })
-            .then(response => response.json())
-            .then(data => {
-                responseDiv.textContent = JSON.stringify(data, null, 2);
-            })
-            .catch(error => {
-                responseDiv.textContent = 'Error: ' + error.message;
-            });
-        });
+        function goToUsers() {
+            window.location.href = 'https://api.peerflow.xyz/users/';
+        }
     </script>
 </body>
 </html>
