@@ -43,11 +43,14 @@
 
         function sendRequest() {
             tg.expand();
-            
-            // Получаем initData из Telegram Web App
+            document.getElementById('response').innerText = ''; // Clear previous response
+            let button = document.querySelector('button');
+            button.disabled = true; // Disable button
+            button.innerText = 'Loading...'; // Change button text
+
             let initData = tg.initData;
-            console.log(initData)
-            // Отправляем запрос на API
+            console.log(initData);
+
             fetch('https://api.peerflow.xyz/users/telegram/callback', {
                 method: 'POST',
                 headers: {
@@ -57,12 +60,29 @@
             })
             .then(response => response.json())
             .then(data => {
-                // Отображаем ответ в окне
-                document.getElementById('response').innerText = JSON.stringify(data, null, 2);
+                if (data.message) {
+                    // Extract the required information from the response
+                    let message = data.message;
+                    let userId = data.user_id;
+                    let username = data.username;
+
+                    // Display the information
+                    document.getElementById('response').innerHTML = `
+                        <strong>${message}</strong><br>
+                        User ID: ${userId}<br>
+                        Username: ${username}
+                    `;
+                } else {
+                    document.getElementById('response').innerText = 'Unexpected response format.';
+                }
             })
             .catch(error => {
                 console.error('Error:', error);
                 document.getElementById('response').innerText = 'Error occurred: ' + error.message;
+            })
+            .finally(() => {
+                button.disabled = false; // Re-enable button
+                button.innerText = 'Send Request'; // Reset button text
             });
         }
 
